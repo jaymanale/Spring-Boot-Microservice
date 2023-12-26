@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -34,6 +35,14 @@ public class StudentController {
   @GetMapping("students/{id}/{first-name}/{last-name}")
   public Student getPathVariableStudent(@PathVariable int id, @PathVariable("first-name") String firstName, @PathVariable("last-name") String lastName){
   return new Student(id,firstName,lastName);
+  }
+
+  // Get Student information based on RequestParam info
+  //http://localhost:8080/students/query?id=1
+
+  @GetMapping("students/query")
+  public Student getStudentByRequestParam(@RequestParam int id){
+  return new Student(id,"sam","karan");
   }
 
 }
