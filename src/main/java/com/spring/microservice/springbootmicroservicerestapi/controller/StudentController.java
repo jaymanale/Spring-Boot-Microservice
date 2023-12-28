@@ -3,9 +3,14 @@ package com.spring.microservice.springbootmicroservicerestapi.controller;
 import com.spring.microservice.springbootmicroservicerestapi.bean.Student;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -43,6 +48,30 @@ public class StudentController {
   @GetMapping("students/query")
   public Student getStudentByRequestParam(@RequestParam int id){
   return new Student(id,"sam","karan");
+  }
+
+  // Spring Boot REST API  -  PostRequest
+  //http://localhost:8080/students/create
+
+  @PostMapping("students/create")
+  @ResponseStatus(HttpStatus.CREATED)
+  public Student createStudent(@RequestBody Student student){
+    System.out.println(student.getId());
+    System.out.println(student.getFirstName());
+    System.out.println(student.getLastName());
+    return  student;
+  }
+
+  // Spring Boot REST API  -  PutRequest -> Update existing resource
+  //http://localhost:8080/students/{id}/update
+
+  @PutMapping("students/{id}/update")
+  public Student updateStudent(@RequestBody Student student, @PathVariable("id") int studentId){
+    System.out.println("Updated Student Id "+ studentId);
+    System.out.println(student.getLastName());
+    System.out.println(student.getId());
+    System.out.println(student.getFirstName());
+    return student;
   }
 
 }
