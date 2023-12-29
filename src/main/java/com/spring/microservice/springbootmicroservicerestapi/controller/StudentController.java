@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("students")
 public class StudentController {
   // Get a Student data
   //http://localhost:8080/student
@@ -30,7 +32,7 @@ public class StudentController {
   }
   // Get List Of Students
   //http://localhost:8080/students
-  @GetMapping("students")
+  @GetMapping
   public ResponseEntity<List<Student>> getStudentList() {
     List<Student> studentList = new ArrayList<>();
     studentList.add(new Student(1,"sam","Alter"));
@@ -43,7 +45,7 @@ public class StudentController {
   // Get Student information based on PathVariable info
   //http://localhost:8080/students/1
 
-  @GetMapping("students/{id}/{first-name}/{last-name}")
+  @GetMapping("{id}/{first-name}/{last-name}")
   public ResponseEntity<Student> getPathVariableStudent(@PathVariable int id, @PathVariable("first-name") String firstName, @PathVariable("last-name") String lastName){
   Student studentObj = new Student();
   studentObj.setId(id);
@@ -55,7 +57,7 @@ public class StudentController {
   // Get Student information based on RequestParam info
   //http://localhost:8080/students/query?id=1
 
-  @GetMapping("students/query")
+  @GetMapping("query")
   public ResponseEntity<Student> getStudentByRequestParam(@RequestParam int id){
     Student studentObj = new Student();
     studentObj.setId(id);
@@ -67,7 +69,7 @@ public class StudentController {
   // Spring Boot REST API  -  PostRequest
   //http://localhost:8080/students/create
 
-  @PostMapping("students/create")
+  @PostMapping("create")
   public ResponseEntity<Student> createStudent(@RequestBody Student student){
     System.out.println(student.getId());
     System.out.println(student.getFirstName());
@@ -78,7 +80,7 @@ public class StudentController {
   // Spring Boot REST API  -  PutRequest -> Update existing resource
   //http://localhost:8080/students/{id}/update
 
-  @PutMapping("students/{id}/update")
+  @PutMapping("{id}/update")
   public ResponseEntity<Student> updateStudent(@RequestBody Student student, @PathVariable("id") int studentId){
     System.out.println("Updated Student Id "+ studentId);
     System.out.println(student.getLastName());
@@ -90,9 +92,9 @@ public class StudentController {
   // Spring Boot REST API  -  Delete -> Delete existing resource
   //http://localhost:8080/students/{id}/delete
 
-  @DeleteMapping("students/{id}/delete")
-  public String deleteStudent(@PathVariable("id") int studentId){
-  return "Student with ID : "+studentId + " deleted successfully";
+  @DeleteMapping("{id}/delete")
+  public ResponseEntity<String> deleteStudent(@PathVariable("id") int studentId){
+  return ResponseEntity.ok("Student with ID : "+studentId + " deleted successfully");
   }
 
 }
