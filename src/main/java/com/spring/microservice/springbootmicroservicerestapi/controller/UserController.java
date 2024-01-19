@@ -2,6 +2,7 @@ package com.spring.microservice.springbootmicroservicerestapi.controller;
 
 import com.spring.microservice.springbootmicroservicerestapi.entity.User;
 import com.spring.microservice.springbootmicroservicerestapi.service.UserService;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -35,5 +36,13 @@ public class UserController {
   public ResponseEntity<User> getUserById(@PathVariable("id") Long userId){
     User userById = userService.getUserById(userId);
     return new ResponseEntity<>(userById, HttpStatus.OK);
+  }
+
+  // Get All Users
+  //http://localhost:8080/api/v1/users
+  @GetMapping
+  public ResponseEntity<List<User>> getUsers(){
+    List<User> users = userService.getUsers();
+    return new ResponseEntity<>(users, HttpStatus.OK);
   }
 }

@@ -2,6 +2,7 @@ package com.spring.microservice.springbootmicroservicerestapi.service;
 
 import com.spring.microservice.springbootmicroservicerestapi.entity.User;
 import com.spring.microservice.springbootmicroservicerestapi.repository.UserRepository;
+import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,5 +23,13 @@ public class UserServiceImpl implements UserService {
   public User getUserById(Long id) {
     Optional<User> byId = userRepository.findById(id);
     return byId.orElseGet(User::new);
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  public List<User> getUsers() {
+    return userRepository.findAll();
   }
 }
