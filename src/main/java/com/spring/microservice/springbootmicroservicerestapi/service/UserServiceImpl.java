@@ -2,11 +2,11 @@ package com.spring.microservice.springbootmicroservicerestapi.service;
 
 import com.spring.microservice.springbootmicroservicerestapi.dto.UserDto;
 import com.spring.microservice.springbootmicroservicerestapi.entity.UserEntity;
-import com.spring.microservice.springbootmicroservicerestapi.mapper.UserMapper;
 import com.spring.microservice.springbootmicroservicerestapi.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,24 +15,26 @@ public class UserServiceImpl implements UserService {
 
   private UserRepository userRepository;
 
+  private ModelMapper modelMapper;
+
 
   @Override
   public UserDto createUser(UserDto userDto) {
     // Convert User DTO to User entity
-    UserEntity userEntity = UserMapper.mapToUserEntity(userDto);
+    UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
 
     // Save user to DB
     UserEntity saveUser = userRepository.save(userEntity);
 
     // Convert User entity to User DTO
-    return UserMapper.mapToUserDto(saveUser);
+    return modelMapper.map(saveUser, UserDto.class);
   }
 
   @Override
   public UserDto getUserById(Long id) {
     Optional<UserEntity> userById = userRepository.findById(id);
     UserEntity userEntity = userById.orElseGet(UserEntity::new);
-    return UserMapper.mapToUserDto(userEntity);
+    return modelMapper.map(userEntity, UserDto.class);
   }
 
   /**
@@ -41,7 +43,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public List<UserDto> getUsers() {
    List<UserEntity> allUsers = userRepository.findAll();
-   return allUsers.stream().map(UserMapper::mapToUserDto).toList();
+   return allUsers.stream().map(user -> modelMapper.map(user, UserDto.class)).toList();
   }
 
   /**
@@ -57,7 +59,7 @@ public class UserServiceImpl implements UserService {
     existingUser.setEmail(userDto.getEmail());
 
     UserEntity saveUser = userRepository.save(existingUser);
-    return UserMapper.mapToUserDto(saveUser);
+    return modelMapper.map(saveUser, UserDto.class);
   }
 
   /**
