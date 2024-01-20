@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -45,4 +46,15 @@ public class UserController {
     List<User> users = userService.getUsers();
     return new ResponseEntity<>(users, HttpStatus.OK);
   }
+
+  // Update existing User by ID
+  //http://localhost:8080/api/v1/users/1
+
+  @PutMapping("{id}")
+  public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user){
+    user.setId(id);
+    User updatedUser = userService.updateUser(user);
+    return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+  }
+
 }
