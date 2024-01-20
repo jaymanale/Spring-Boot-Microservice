@@ -8,7 +8,7 @@ public interface UserService {
 
   public UserDto createUser(UserDto userDto);
 
-  public UserEntity getUserById(Long id);
+  public UserDto getUserById(Long id);
 
   public List<UserEntity> getUsers();
 
