@@ -1,5 +1,6 @@
 package com.spring.microservice.springbootmicroservicerestapi.service;
 
+import com.spring.microservice.springbootmicroservicerestapi.DTO.UserDto;
 import com.spring.microservice.springbootmicroservicerestapi.entity.User;
 import com.spring.microservice.springbootmicroservicerestapi.repository.UserRepository;
 import java.util.List;
@@ -15,8 +16,22 @@ public class UserServiceImpl implements UserService {
 
 
   @Override
-  public User createUser(User user) {
-    return userRepository.save(user);
+  public UserDto createUser(UserDto userDto) {
+    User userEntity = new User(
+        userDto.getId(),
+        userDto.getFirstName(),
+        userDto.getLastName(),
+        userDto.getEmail()
+    );
+
+    User saveUser = userRepository.save(userEntity);
+
+    return new UserDto(
+        saveUser.getId(),
+        saveUser.getFirstName(),
+        saveUser.getLastName(),
+        saveUser.getEmail()
+    );
   }
 
   @Override

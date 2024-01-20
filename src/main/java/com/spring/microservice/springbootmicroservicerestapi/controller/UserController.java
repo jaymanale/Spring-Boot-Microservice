@@ -1,11 +1,11 @@
 package com.spring.microservice.springbootmicroservicerestapi.controller;
 
+import com.spring.microservice.springbootmicroservicerestapi.DTO.UserDto;
 import com.spring.microservice.springbootmicroservicerestapi.entity.User;
 import com.spring.microservice.springbootmicroservicerestapi.service.UserService;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -27,9 +26,9 @@ public class UserController {
   // Build create User REST API End point
   //http://localhost:8080/api/v1/users
   @PostMapping
-  public ResponseEntity<User> createUser(@RequestBody User user){
-    User savedUser = userService.createUser(user);
-    return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+  public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+    UserDto savedUserDto = userService.createUser(userDto);
+    return new ResponseEntity<>(savedUserDto, HttpStatus.CREATED);
   }
 
   // Get User by ID
