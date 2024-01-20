@@ -1,7 +1,8 @@
 package com.spring.microservice.springbootmicroservicerestapi.service;
 
-import com.spring.microservice.springbootmicroservicerestapi.DTO.UserDto;
-import com.spring.microservice.springbootmicroservicerestapi.entity.User;
+import com.spring.microservice.springbootmicroservicerestapi.dto.UserDto;
+import com.spring.microservice.springbootmicroservicerestapi.entity.UserEntity;
+import com.spring.microservice.springbootmicroservicerestapi.mapper.UserMapper;
 import com.spring.microservice.springbootmicroservicerestapi.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
@@ -17,49 +18,42 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDto createUser(UserDto userDto) {
-    User userEntity = new User(
-        userDto.getId(),
-        userDto.getFirstName(),
-        userDto.getLastName(),
-        userDto.getEmail()
-    );
+    // Convert User DTO to User entity
+    UserEntity userEntity = UserMapper.mapToUserEntity(userDto);
 
-    User saveUser = userRepository.save(userEntity);
+    // Save user to DB
+    UserEntity saveUser = userRepository.save(userEntity);
 
-    return new UserDto(
-        saveUser.getId(),
-        saveUser.getFirstName(),
-        saveUser.getLastName(),
-        saveUser.getEmail()
-    );
+    // Convert User entity to User DTO
+    return UserMapper.mapToUserDto(saveUser);
   }
 
   @Override
-  public User getUserById(Long id) {
-    Optional<User> byId = userRepository.findById(id);
-    return byId.orElseGet(User::new);
+  public UserEntity getUserById(Long id) {
+    Optional<UserEntity> byId = userRepository.findById(id);
+    return byId.orElseGet(UserEntity::new);
   }
 
   /**
    * @return
    */
   @Override
-  public List<User> getUsers() {
+  public List<UserEntity> getUsers() {
     return userRepository.findAll();
   }
 
   /**
-   * @param user
+   * @param userEntity
    * @return
    */
   @Override
-  public User updateUser(User user) {
+  public UserEntity updateUser(UserEntity userEntity) {
 
-    Optional<User> userById = userRepository.findById(user.getId());
-    User existingUser = userById.orElse(user);
-    existingUser.setFirstName(user.getFirstName());
-    existingUser.setLastName(user.getLastName());
-    existingUser.setEmail(user.getEmail());
+    Optional<UserEntity> userById = userRepository.findById(userEntity.getId());
+    UserEntity existingUser = userById.orElse(userEntity);
+    existingUser.setFirstName(userEntity.getFirstName());
+    existingUser.setLastName(userEntity.getLastName());
+    existingUser.setEmail(userEntity.getEmail());
     return userRepository.save(existingUser);
   }
 

@@ -1,8 +1,7 @@
-package com.spring.microservice.springbootmicroservicerestapi.DTO;
+package com.spring.microservice.springbootmicroservicerestapi.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Data

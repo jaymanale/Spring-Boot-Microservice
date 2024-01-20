@@ -1,7 +1,7 @@
 package com.spring.microservice.springbootmicroservicerestapi.controller;
 
-import com.spring.microservice.springbootmicroservicerestapi.DTO.UserDto;
-import com.spring.microservice.springbootmicroservicerestapi.entity.User;
+import com.spring.microservice.springbootmicroservicerestapi.dto.UserDto;
+import com.spring.microservice.springbootmicroservicerestapi.entity.UserEntity;
 import com.spring.microservice.springbootmicroservicerestapi.service.UserService;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -34,16 +34,16 @@ public class UserController {
   // Get User by ID
   //http://localhost:8080/api/v1/users/1
   @GetMapping("{id}")
-  public ResponseEntity<User> getUserById(@PathVariable("id") Long userId){
-    User userById = userService.getUserById(userId);
+  public ResponseEntity<UserEntity> getUserById(@PathVariable("id") Long userId){
+    UserEntity userById = userService.getUserById(userId);
     return new ResponseEntity<>(userById, HttpStatus.OK);
   }
 
   // Get All Users
   //http://localhost:8080/api/v1/users
   @GetMapping
-  public ResponseEntity<List<User>> getUsers(){
-    List<User> users = userService.getUsers();
+  public ResponseEntity<List<UserEntity>> getUsers(){
+    List<UserEntity> users = userService.getUsers();
     return new ResponseEntity<>(users, HttpStatus.OK);
   }
 
@@ -51,9 +51,9 @@ public class UserController {
   //http://localhost:8080/api/v1/users/1
 
   @PutMapping("{id}")
-  public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user){
-    user.setId(id);
-    User updatedUser = userService.updateUser(user);
+  public ResponseEntity<UserEntity> updateUser(@PathVariable Long id, @RequestBody UserEntity userEntity){
+    userEntity.setId(id);
+    UserEntity updatedUser = userService.updateUser(userEntity);
     return new ResponseEntity<>(updatedUser, HttpStatus.OK);
   }
 
