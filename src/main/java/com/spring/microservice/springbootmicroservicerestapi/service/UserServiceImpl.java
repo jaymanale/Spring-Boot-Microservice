@@ -47,4 +47,14 @@ public class UserServiceImpl implements UserService {
     existingUser.setEmail(user.getEmail());
     return userRepository.save(existingUser);
   }
+
+  /**
+   * @param id
+   * @return
+   */
+  @Override
+  public String deleteUser(Long id) {
+    userRepository.deleteById(id);
+    return "User with ID : "+id +" delete successfully";
+  }
 }
