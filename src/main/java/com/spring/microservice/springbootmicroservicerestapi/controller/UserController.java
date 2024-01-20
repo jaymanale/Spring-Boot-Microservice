@@ -42,8 +42,8 @@ public class UserController {
   // Get All Users
   //http://localhost:8080/api/v1/users
   @GetMapping
-  public ResponseEntity<List<UserEntity>> getUsers(){
-    List<UserEntity> users = userService.getUsers();
+  public ResponseEntity<List<UserDto>> getUsers(){
+    List<UserDto> users = userService.getUsers();
     return new ResponseEntity<>(users, HttpStatus.OK);
   }
 
@@ -51,9 +51,9 @@ public class UserController {
   //http://localhost:8080/api/v1/users/1
 
   @PutMapping("{id}")
-  public ResponseEntity<UserEntity> updateUser(@PathVariable Long id, @RequestBody UserEntity userEntity){
-    userEntity.setId(id);
-    UserEntity updatedUser = userService.updateUser(userEntity);
+  public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto){
+    userDto.setId(id);
+    UserDto updatedUser = userService.updateUser(userDto);
     return new ResponseEntity<>(updatedUser, HttpStatus.OK);
   }
 

@@ -10,9 +10,9 @@ public interface UserService {
 
   public UserDto getUserById(Long id);
 
-  public List<UserEntity> getUsers();
+  public List<UserDto> getUsers();
 
-  public UserEntity updateUser(UserEntity userEntity);
+  public UserDto updateUser(UserDto userDto);
 
   public String deleteUser(Long id);
 }

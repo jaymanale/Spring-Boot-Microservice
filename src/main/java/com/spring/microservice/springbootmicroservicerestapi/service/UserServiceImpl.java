@@ -39,23 +39,25 @@ public class UserServiceImpl implements UserService {
    * @return
    */
   @Override
-  public List<UserEntity> getUsers() {
-    return userRepository.findAll();
+  public List<UserDto> getUsers() {
+   List<UserEntity> allUsers = userRepository.findAll();
+   return allUsers.stream().map(UserMapper::mapToUserDto).toList();
   }
 
   /**
-   * @param userEntity
+   * @param userDto
    * @return
    */
   @Override
-  public UserEntity updateUser(UserEntity userEntity) {
+  public UserDto updateUser(UserDto userDto) {
 
-    Optional<UserEntity> userById = userRepository.findById(userEntity.getId());
-    UserEntity existingUser = userById.orElse(userEntity);
-    existingUser.setFirstName(userEntity.getFirstName());
-    existingUser.setLastName(userEntity.getLastName());
-    existingUser.setEmail(userEntity.getEmail());
-    return userRepository.save(existingUser);
+    UserEntity existingUser = userRepository.findById(userDto.getId()).get();
+    existingUser.setFirstName(userDto.getFirstName());
+    existingUser.setLastName(userDto.getLastName());
+    existingUser.setEmail(userDto.getEmail());
+
+    UserEntity saveUser = userRepository.save(existingUser);
+    return UserMapper.mapToUserDto(saveUser);
   }
 
   /**
