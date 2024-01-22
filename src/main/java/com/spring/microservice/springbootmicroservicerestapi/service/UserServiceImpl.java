@@ -2,6 +2,7 @@ package com.spring.microservice.springbootmicroservicerestapi.service;
 
 import com.spring.microservice.springbootmicroservicerestapi.dto.UserDto;
 import com.spring.microservice.springbootmicroservicerestapi.entity.UserEntity;
+import com.spring.microservice.springbootmicroservicerestapi.exception.ResourceNotFoundException;
 import com.spring.microservice.springbootmicroservicerestapi.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
@@ -32,8 +33,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDto getUserById(Long id) {
-    Optional<UserEntity> userById = userRepository.findById(id);
-    UserEntity userEntity = userById.orElseGet(UserEntity::new);
+    UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
     return modelMapper.map(userEntity, UserDto.class);
   }
 
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDto updateUser(UserDto userDto) {
 
-    UserEntity existingUser = userRepository.findById(userDto.getId()).get();
+    UserEntity existingUser = userRepository.findById(userDto.getId()).orElseThrow(() -> new ResourceNotFoundException("User","id", userDto.getId()));
     existingUser.setFirstName(userDto.getFirstName());
     existingUser.setLastName(userDto.getLastName());
     existingUser.setEmail(userDto.getEmail());
@@ -68,6 +68,7 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   public String deleteUser(Long id) {
+    userRepository.findById(id).orElseThrow(() ->  new ResourceNotFoundException("User", "id", id));
     userRepository.deleteById(id);
     return "User with ID : "+id +" delete successfully";
   }
