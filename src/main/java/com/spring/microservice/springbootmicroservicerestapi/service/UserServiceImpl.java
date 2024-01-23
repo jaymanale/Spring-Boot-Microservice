@@ -2,6 +2,7 @@ package com.spring.microservice.springbootmicroservicerestapi.service;
 
 import com.spring.microservice.springbootmicroservicerestapi.dto.UserDto;
 import com.spring.microservice.springbootmicroservicerestapi.entity.UserEntity;
+import com.spring.microservice.springbootmicroservicerestapi.exception.EmailAlreadyExistException;
 import com.spring.microservice.springbootmicroservicerestapi.exception.ResourceNotFoundException;
 import com.spring.microservice.springbootmicroservicerestapi.repository.UserRepository;
 import java.util.List;
@@ -21,6 +22,12 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDto createUser(UserDto userDto) {
+    // check if given email is already present in DB
+
+    Optional<UserEntity> byEmail = userRepository.findByEmail(userDto.getEmail());
+    if(byEmail.isPresent()){
+      throw new EmailAlreadyExistException("Email already exist for user");
+    }
     // Convert User DTO to User entity
     UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
 
