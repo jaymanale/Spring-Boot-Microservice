@@ -5,6 +5,7 @@ import com.spring.microservice.springbootmicroservicerestapi.entity.UserEntity;
 import com.spring.microservice.springbootmicroservicerestapi.exception.ErrorDetails;
 import com.spring.microservice.springbootmicroservicerestapi.exception.ResourceNotFoundException;
 import com.spring.microservice.springbootmicroservicerestapi.service.UserService;
+import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -31,7 +32,7 @@ public class UserController {
   // Build create User REST API End point
   //http://localhost:8080/api/v1/users
   @PostMapping
-  public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+  public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto userDto){
     UserDto savedUserDto = userService.createUser(userDto);
     return new ResponseEntity<>(savedUserDto, HttpStatus.CREATED);
   }
@@ -56,7 +57,7 @@ public class UserController {
   //http://localhost:8080/api/v1/users/1
 
   @PutMapping("{id}")
-  public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto){
+  public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody @Valid UserDto userDto){
     userDto.setId(id);
     UserDto updatedUser = userService.updateUser(userDto);
     return new ResponseEntity<>(updatedUser, HttpStatus.OK);
